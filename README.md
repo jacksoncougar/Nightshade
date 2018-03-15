@@ -1,0 +1,12 @@
+# POMODORO TECHNIQUE SCRIPT 
+
+**FEATURES**	
+
+- Assign a TASK to the WORK TIMER
+
+**PLANNED FEATURES**
+
+- Pause WORK TIMER
+- Log completed TASKS and BREAKS
+
+**AUTHOR:** Jack Wiebe
