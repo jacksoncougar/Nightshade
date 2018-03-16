@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 # AUTHOR JACKSON WIEBE
@@ -30,34 +29,14 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-trap 'pause' SIGTERM SIGINT
-    
-# Global variables
-
-declare __TOMO_REPEAT
-declare __TOMO_TIME
-declare __TOMO_BREAK
-declare __TOMO_TASK
-declare __TOMO_RESUME
-declare __TOMO_REMAINDER
-
-
-
-tomo()
+tomato()
 {
-    source .e
-    
-    if ($__TOMO_RESUME); then
-	resume
-    fi
-    
-    __TOMO_RESUME=false
     # Assign DEFAULTS to variables
     
     REPEAT=1
     TIME="20m"
     BREAK="4m"
-    TASK="hacking the pentagon"
+    TASK="'hacking the pentagon'"
 
     # Print HELP or VERSION
     
@@ -131,73 +110,69 @@ EOF
 		return 1
 		;;
 	    *)
-		TASK=${@:-TASK}
+		#TASK=${@:-$TASK}
 		break
 		;;	   
 	esac
     done
 
-    # SAVE TO GLOBALS
-    
-    __TOMO_TIME=$TIME
-    __TOMO_BREAK=$BREAK
-    __TOMO_TASK=$TASK
-
     # MAIN LOOP LOGIC
 
     for ((;REPEAT > 0;REPEAT--));
     do
-	run $TIME $BREAK $TASK
+	work $TIME "$TASK"
+	if ((REPEAT > 1)); then
+	    breather $BREAK
+	else
+	    complete "$TASK"
+	fi
     done
 }
 
-run()
+work()
 {
     TIME=$1
-    BREAK=$2
-    TASK=$3
+    TASK=$2
 
-    read -p "Press enter to start $TASK..."
-    echo "Starting $TIME timer!"
+    read -p "Press enter to begin $TASK..."
 
     # Start time for PAUSE & RESUME
     SECONDS=0
-    __TOMO_REMAINDER=TIME
-    __TOMO_REPEAT=REPEAT
-    
-    sleep $TIME & wait $!
-    notify-send "Break-time!" "Take $BREAK to relax" 
+
+    declare INPUT
+    #SET and RESTORE timer value when PAUSED
+    declare PAUSE 
+
+    for ((; SECONDS <= TIME;)); do
+	#Poll for PAUSE
+	read -t 1 -n 1 -s INPUT
+	if [[ $INPUT == "p" ]];
+	then
+	    PAUSE=$SECONDS;
+	    read -p "*** Paused... press enter to continue."
+	    SECONDS=$PAUSE;
+	fi
+    done
+}
+
+breather()
+{
+    BREAK=$1
+    notify-send "Break-time" "Take $BREAK to relax" 
     sleep 2s
     xbacklight =1 -steps 10
     sleep $BREAK
     xbacklight =100 -steps 1
     xbacklight =1 -steps 1
     xbacklight =100 -steps 1 
-    notify-send "Work-time!" "Try to concentrate for $TIME"
 }
 
-pause()
+complete()
 {
-    # kill background jobs (timers)
-    kill $(jobs -p)
-    __TOMO_RESUME=true
-    __TOMO_REMAINDER=$((__TOMO_REMAINDER-SECONDS))
-
-    declare -p __TOMO_RESUME __TOMO_TIME __TOMO_REPEAT \
-	    __TOMO_BREAK __TOMO_TASK > ./.e
+    TASK=$1
+    xbacklight =100 -steps 1
+    xbacklight =1 -steps 1
+    xbacklight =100 -steps 1
     
-    cat <<EOF 
-Pausing current task... 
-$SECONDS remain.
-run $RESUME_SYNOPSIS to resume.
-
-EOF
-}
-
-resume()
-{
-    echo "Resuming..."
-    for((;__TOMO_REPEAT > 0; __TOMO_REPEAT--)); do
-	run $__TOMO_TIME $__TOMO_BREAK $__TOMO_TASK
-    done
+    notify-send "$TASK completed" "Good work, take a breather."
 }
