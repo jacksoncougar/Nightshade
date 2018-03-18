@@ -34,8 +34,8 @@ tomato()
     # Assign DEFAULTS to variables
     
     REPEAT=1
-    TIME="20m"
-    BREAK="4m"
+    TIME="1200" #20 minutes
+    BREAK="240"  #4 minutes
     TASK="'hacking the pentagon'"
 
     # Print HELP or VERSION

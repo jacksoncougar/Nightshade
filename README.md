@@ -15,6 +15,28 @@ ignored. By introducing a visual queue the physically prevents you from
 continuing the work without some effort it is easier in my experience to switch
 into 'break mode'.
 
+### SYNOPSIS ###
+
+	pomo [COMMANDS] [TASK]
+
+### DESCRIPTION ###
+
+	Starts a pomodoro timer for the given TASK.
+ 
+	-t, --time=TIME
+		sets the work timer to the given time; e.g.,
+		'--time=20m' will set the timer for 20 minutes.
+
+	-b, --break=TIME
+		sets the break timer to the given time; e.g.,
+		'--break=4m' will set the break timer for 4 minutes.
+
+	-r, --repeat=REPETITIONS		
+		sets the number of repetitions of pomodoro timers for the given task; e.g.,
+		'repeat=4' will run the work timer 4 times, with 3 break timers interspersed.
+
+### EXAMPLE ###
+
 ![Example of normal work][work]
 ![Example of break notification][notify_break]
 ![Example of break][break]
