@@ -33,8 +33,8 @@ tomato()
 {
     # Assign DEFAULTS to variables
     
-    REPEAT=1
-    TIME="1200" #20 minutes
+    REPEAT=3     #repeat work timer 3 times, with 2 breaks in between.
+    TIME="1200"  #20 minutes
     BREAK="240"  #4 minutes
     TASK="'hacking the pentagon'"
 
@@ -47,6 +47,8 @@ SYNOPSIS
 
 DESCRIPTION
 	Starts a pomodoro timer for the given TASK.
+	
+	Mandatory  arguments  to  long  options are mandatory for short options too.
  
 	-t, --time=TIME
 		sets the work timer to the given time; e.g.,
