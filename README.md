@@ -17,7 +17,7 @@ into 'break mode'.
 
 ### SYNOPSIS ###
 
-	pomo [COMMANDS] [TASK]
+	tomato [COMMANDS] [TASK]
 
 ### DESCRIPTION ###
 
