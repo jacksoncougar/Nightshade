@@ -24,7 +24,6 @@ into 'break mode'.
 	Starts a pomodoro timer for the given TASK.
 	
 	Mandatory  arguments  to  long  options are mandatory for short options too.
-
  
 	-t, --time=TIME
 		sets the work timer to the given time; e.g.,
