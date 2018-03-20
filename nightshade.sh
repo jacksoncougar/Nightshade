@@ -29,8 +29,12 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+# Main
 tomato()
 {
+    SET_TERMINAL_TITLE="\033]0;Nightshade\007"
+    WRITE_STATUS="\033]r".
+    
     # Assign DEFAULTS to variables
     
     REPEAT=3     #repeat work timer 3 times, with 2 breaks in between.
@@ -85,7 +89,7 @@ EOF
 			TIME=$((${TIME%%m}*60))
 			;;
 		    *s)
-			TIME=${TIME%%m}
+			TIME=${TIME%%s}
 			;;
 		esac
 		shift
@@ -112,7 +116,7 @@ EOF
 		return 1
 		;;
 	    *)
-		#TASK=${@:-$TASK}
+		TASK=${@:-$TASK}
 		break
 		;;	   
 	esac
@@ -120,10 +124,10 @@ EOF
 
     # MAIN LOOP LOGIC
 
-    for ((;REPEAT > 0;REPEAT--));
+    for ((; REPEAT > 0; REPEAT-- ));
     do
 	work $TIME "$TASK"
-	if ((REPEAT > 1)); then
+	if (( REPEAT > 1 )); then
 	    breather $BREAK
 	else
 	    complete "$TASK"
@@ -131,11 +135,16 @@ EOF
     done
 }
 
+# Handles the timer and input during a WORK period for a given TASK.
 work()
 {
     TIME=$1
     TASK=$2
 
+    #Change the name of the Terminal and bring it to the front.
+    printf "$SET_TERMINAL_TITLE"
+    xdotool search --name ^Nightshade windowactivate
+    
     read -p "Press enter to begin $TASK..."
 
     # Start time for PAUSE & RESUME
@@ -155,8 +164,11 @@ work()
 	    SECONDS=$PAUSE;
 	fi
     done
+
+    logWork "$TASK" $TIME
 }
 
+# Handles setting the screen dim for the given BREAK period.
 breather()
 {
     BREAK=$1
@@ -169,12 +181,47 @@ breather()
     xbacklight =100 -steps 1 
 }
 
+# Handles returning the screen to normal after accmplishing the TASK.
 complete()
 {
     TASK=$1
+    TIME=$2
     xbacklight =100 -steps 1
     xbacklight =1 -steps 1
     xbacklight =100 -steps 1
     
     notify-send "$TASK completed" "Good work, take a breather."
+    logComplete "$TASK" $TIME
 }
+
+# Writes to the log file that a TASK was engaged with.
+logWork()
+{
+    TASK=$1
+    TIME=$2
+
+    timeStamp STAMP
+    
+    echo "$STAMP: Engaged in $TASK for $TIME." >> nightshade.log
+}
+
+# Writes to the log file that a TASK was successfully accomplished.
+logComplete()
+{
+    TASK=$1
+    TIME=$2
+
+    timeStamp STAMP
+    
+    echo "$STAMP: Accomplished $TASK." >> nightshade.log
+}
+
+# Generates and returns a timestamp
+# @return returns timestamp
+timeStamp()
+{
+    __resultVar=$1
+    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    eval $__resultVar="'$timestamp'"
+}
+
