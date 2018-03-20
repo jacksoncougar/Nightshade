@@ -45,14 +45,20 @@ into 'break mode'.
 
 Inspired by [this](https://github.com/rukshn/pomodoro).
 
+## DEPENDANCIES ##
+
+- Bash shell
+- xdotool (linux)
+
 ## FEATURES ##
 
 - Assign a TASK to the WORK TIMER
 - Pause WORK TIMER
+- Logs WORK PERIODS and COMPLETED TASKS.
 
 ## PLANNED FEATURES ##
 
-- Log completed TASKS and BREAKS
+- Log BREAKS
 
 [work]: https://github.com/jacksoncougar/Nightshade/blob/master/images/working.png
 [notify_break]: https://github.com/jacksoncougar/Nightshade/blob/master/images/break_triggered.png
