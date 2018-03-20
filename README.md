@@ -8,12 +8,12 @@
 A linux-terminal script for running a pomodoro timer for the eponymous
 management technique. 
 
-The defining feature is the use of a visual cue in the form of dimming the
-screen to signal when to take breaks or return to work. From personal experience
-with other pomodoro timers, sound or notifications alone can be easily
-ignored. By introducing a visual queue the physically prevents you from
-continuing the work without some effort it is easier in my experience to switch
-into 'break mode'.
+The defining feature is the use of a visual cue by dimming of the screen to
+signal when to take breaks, and restoring the screen when its time to return to
+work. From personal experience with other pomodoro timers, sound or
+notifications alone can be easily ignored. By introducing this visual cue that
+physically hampers you from continuing the work without some effort it is easier
+in my experience to switch into 'break mode'.
 
 ### SYNOPSIS ###
 
@@ -45,14 +45,20 @@ into 'break mode'.
 
 Inspired by [this](https://github.com/rukshn/pomodoro).
 
+## DEPENDANCIES ##
+
+- Bash shell
+- xdotool (linux)
+
 ## FEATURES ##
 
 - Assign a TASK to the WORK TIMER
 - Pause WORK TIMER
+- Logs WORK PERIODS and COMPLETED TASKS.
 
 ## PLANNED FEATURES ##
 
-- Log completed TASKS and BREAKS
+- Log BREAKS
 
 [work]: https://github.com/jacksoncougar/Nightshade/blob/master/images/working.png
 [notify_break]: https://github.com/jacksoncougar/Nightshade/blob/master/images/break_triggered.png
