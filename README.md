@@ -55,10 +55,11 @@ Inspired by [this](https://github.com/rukshn/pomodoro).
 - Assign a TASK to the WORK TIMER
 - Pause WORK TIMER
 - Logs WORK PERIODS and COMPLETED TASKS.
+- Log BREAKS
 
 ## PLANNED FEATURES ##
 
-- Log BREAKS
+- nothing planned right now
 
 [work]: https://github.com/jacksoncougar/Nightshade/blob/master/images/working.png
 [notify_break]: https://github.com/jacksoncougar/Nightshade/blob/master/images/break_triggered.png
