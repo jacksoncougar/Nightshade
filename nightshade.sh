@@ -32,6 +32,7 @@
 # Main
 tomato()
 {
+    VERSION="1.0"
     LOGFILE="$HOME/nightshade.log"
     SET_TERMINAL_TITLE="\033]0;Nightshade\007"
     WRITE_STATUS="\033]r".
@@ -71,7 +72,7 @@ EOF
     fi
     if [[ "$1" == "-v" ]] || [[ "$1" == "--version" ]]; then
 	cat <<EOF
-VERSION: 0
+VERSION: $VERSION
 AUTHOR:  Jack Wiebe     
 MODIFIED: March 25, 2018
 EOF
