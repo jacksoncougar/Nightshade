@@ -32,6 +32,7 @@
 # Main
 tomato()
 {
+    LOGFILE="$HOME/nightshade.log"
     SET_TERMINAL_TITLE="\033]0;Nightshade\007"
     WRITE_STATUS="\033]r".
     
@@ -126,7 +127,7 @@ EOF
 
     for ((; REPEAT > 0; REPEAT-- ));
     do
-	work $TIME "$TASK"
+	(work $TIME "$TASK") || return 0;
 	if (( REPEAT > 1 )); then
 	    breather $BREAK
 	else
@@ -146,7 +147,8 @@ work()
     xdotool search --name ^Nightshade windowactivate
     
     read -p "Press enter to begin $TASK..."
-
+    logStartWork "$TASK"
+    
     # Start time for PAUSE & RESUME
     SECONDS=0
 
@@ -159,9 +161,20 @@ work()
 	read -t 1 -n 1 -s INPUT
 	if [[ $INPUT == "p" ]];
 	then
+	    logBreak "$TASK" $TIME
 	    PAUSE=$SECONDS;
 	    read -p "*** Paused... press enter to continue."
 	    SECONDS=$PAUSE;
+	    logResume "$TASK" $TIME
+	fi
+	if [ "$INPUT" = $'\033' ];
+	then
+	    read -t 0.00001 -n 1 -s INPUT
+	    if [ "$INPUT" = '' ];
+	    then
+		logComplete "$TASK" $TIME
+		return 1 # freedom...
+	    fi
 	fi
     done
 
@@ -172,6 +185,7 @@ work()
 breather()
 {
     BREAK=$1
+
     notify-send "Break-time" "Take $BREAK to relax" 
     sleep 2s
     xbacklight =1 -steps 10
@@ -186,6 +200,7 @@ complete()
 {
     TASK=$1
     TIME=$2
+
     xbacklight =100 -steps 1
     xbacklight =1 -steps 1
     xbacklight =100 -steps 1
@@ -197,23 +212,37 @@ complete()
 # Writes to the log file that a TASK was engaged with.
 logWork()
 {
-    TASK=$1
-    TIME=$2
+    log "Engaged $1 for $2"
+}
 
-    timeStamp STAMP
-    
-    echo "$STAMP: Engaged in $TASK for $TIME." >> nightshade.log
+logStartWork()
+{
+    printf "....................\n" >> $LOGFILE
+    log "Started working on $1"
 }
 
 # Writes to the log file that a TASK was successfully accomplished.
 logComplete()
 {
-    TASK=$1
-    TIME=$2
+    log "Accomplished $1"
+}
+
+logBreak()
+{
+    log "Took a break from $1"
+}
+
+logResume()
+{
+    log "Resumed work on $1"
+}
+
+log()
+{
+    MSG=$1
 
     timeStamp STAMP
-    
-    echo "$STAMP: Accomplished $TASK." >> nightshade.log
+    echo -e "$STAMP: $MSG" >> $LOGFILE
 }
 
 # Generates and returns a timestamp
