@@ -2,8 +2,7 @@
 
 ## POMODORO TECHNIQUE SCRIPT ##
 
-**AUTHOR:** Jack Wiebe
-**DATE: March 15, 2018**
+Created by Jackson Cougar Wiebe on March 15, 2018
 
 A linux-terminal script for running a pomodoro timer for the eponymous
 management technique. 
@@ -52,10 +51,10 @@ Inspired by [this](https://github.com/rukshn/pomodoro).
 
 ## FEATURES ##
 
-- Assign a TASK to the WORK TIMER
-- Pause WORK TIMER
-- Logs WORK PERIODS and COMPLETED TASKS.
-- Log BREAKS
+- Assign a task-name to the work timer
+- Pause work timer.
+- Log periods of work and completed tasks.
+- Log breaks taken.
 
 ## PLANNED FEATURES ##
 
